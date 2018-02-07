@@ -9,6 +9,7 @@ Credits
 -------
 
 - Alan Ramos.
+- Jarsa Sistemas.
 
 Maintainer
 ----------

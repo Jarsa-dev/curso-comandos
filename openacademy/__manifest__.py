@@ -14,6 +14,7 @@
         'base',
     ],
     'data': [
+        'views/openacademy.xml',
         'views/openacademy_course.xml',
     ],
     'demo': [

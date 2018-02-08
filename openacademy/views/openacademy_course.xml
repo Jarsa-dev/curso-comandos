@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<odoo>    
+<odoo>
+    <record id="course_list_action" model="ir.actions.act_window">
+        <field name="name">Courses</field>
+        <field name="res_model">openacademy.course</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first course
+                </p>
+        </field>
+    </record>
+    <menuitem action="course_list_action" id="courses_menu" name="Courses" parent="openacademy_menu"/>
 </odoo>

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright YEAR(S), AUTHOR(S)
+# Copyright 2018, Jarsa Sistemas
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'Openacademy',
@@ -16,6 +16,8 @@
     'data': [
         'views/openacademy.xml',
         'views/openacademy_course.xml',
+        'views/openacademy_session.xml',
+        'views/res_partner.xml',
     ],
     'demo': [
         'demo/openacademy_course.xml',

@@ -2,7 +2,7 @@
 # Copyright YEAR(S), AUTHOR(S)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class OpenacademyCourse(models.Model):
@@ -17,6 +17,18 @@ class OpenacademyCourse(models.Model):
         index=True)
     session_ids = fields.One2many(
         'openacademy.session', 'course_id', string="Sessions")
+
+    @api.multi
+    def copy(self, default=None):
+        default = dict(default or {})
+        copied_count = self.search_count(
+            [('name', '=like', u"Copy of {}%".format(self.name))])
+        if not copied_count:
+            new_name = u"Copy of {}".format(self.name)
+        else:
+            new_name = u"Copy of {} ({})".format(self.name, copied_count)
+        default['name'] = new_name
+        return super(OpenacademyCourse, self).copy(default)
 
     _sql_constraints = [
         ('name_description_check',

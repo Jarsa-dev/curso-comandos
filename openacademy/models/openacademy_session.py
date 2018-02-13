@@ -36,3 +36,21 @@ class OpenacademySession(models.Model):
                 rec.taken_seats = 0.0
             else:
                 rec.taken_seats = 100.0 * len(rec.attendee_ids) / rec.seats
+
+    @api.onchange('seats', 'attendee_ids')
+    def _onchange_verify_valid_seats(self):
+        if self.seats < 0:
+            return {
+                'warning': {
+                    'title': "Incorrect 'seats' value",
+                    'message': "The number of available seats may not be "
+                               "negative",
+                },
+            }
+        if self.seats < len(self.attendee_ids):
+            return {
+                'warning': {
+                    'title': "Too many attendees",
+                    'message': "Increase seats or remove excess attendees",
+                },
+            }

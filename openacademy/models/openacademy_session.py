@@ -2,6 +2,8 @@
 # Copyright 2018, Jarsa Sistemas
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+from datetime import timedelta
+
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -29,6 +31,11 @@ class OpenacademySession(models.Model):
     taken_seats = fields.Float(
         string="Taken seats", compute='_compute_taken_seats')
     active = fields.Boolean(default=True)
+    end_date = fields.Date(
+        string="End Date",
+        store=True,
+        compute='_compute_end_date',
+        inverse='_inverse_end_date')
 
     @api.depends('seats', 'attendee_ids')
     def _compute_taken_seats(self):
@@ -62,3 +69,27 @@ class OpenacademySession(models.Model):
             if rec.instructor_id and rec.instructor_id in rec.attendee_ids:
                 raise ValidationError(
                     "A session's instructor can't be an attendee")
+
+    @api.depends('start_date', 'duration')
+    def _compute_end_date(self):
+        for rec in self:
+            if not (rec.start_date and rec.duration):
+                rec.end_date = rec.start_date
+                continue
+
+            # Add duration to start_date, but: Monday + 5 days = Saturday, so
+            # subtract one second to get on Friday instead
+            start = fields.Datetime.from_string(rec.start_date)
+            duration = timedelta(days=rec.duration, seconds=-1)
+            rec.end_date = start + duration
+
+    def _inverse_end_date(self):
+        for rec in self:
+            if not (rec.start_date and rec.end_date):
+                continue
+
+            # Compute the difference between dates, but: Friday - Monday = 4 days,
+            # so add one day to get 5 days instead
+            start_date = fields.Datetime.from_string(rec.start_date)
+            end_date = fields.Datetime.from_string(rec.end_date)
+            rec.duration = (end_date - start_date).days + 1

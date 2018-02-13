@@ -26,13 +26,23 @@
             </form>
         </field>
     </record>
+    <record id="session_calendar_view" model="ir.ui.view">
+        <field name="name">session.calendar</field>
+        <field name="model">openacademy.session</field>
+        <field name="arch" type="xml">
+            <calendar color="instructor_id" date_start="start_date" date_stop="end_date" string="Session Calendar">
+                <field name="name"/>
+            </calendar>
+        </field>
+    </record>
     <record id="session_tree_view" model="ir.ui.view">
         <field name="name">session.tree</field>
         <field name="model">openacademy.session</field>
         <field name="arch" type="xml">
-            <tree string="Session Tree">
+            <tree decoration-danger="duration&gt;15" decoration-info="duration&lt;5" string="Session Tree">
                 <field name="name"/>
                 <field name="course_id"/>
+                <field invisible="1" name="duration"/>
                 <field name="taken_seats" widget="progressbar"/>
             </tree>
         </field>
@@ -41,7 +51,7 @@
         <field name="name">Sessions</field>
         <field name="res_model">openacademy.session</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,calendar</field>
     </record>
     <menuitem action="session_list_action" id="session_menu" name="Sessions" parent="openacademy_menu"/>
 </odoo>

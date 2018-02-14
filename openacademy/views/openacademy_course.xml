@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <!-- Form View -->
     <record id="course_form_view" model="ir.ui.view">
         <field name="name">Course Form</field>
         <field name="model">openacademy.course</field>
@@ -27,6 +28,7 @@
             </form>
         </field>
     </record>
+    <!-- Tree View -->
     <record id="course_tree_view" model="ir.ui.view">
         <field name="name">course.tree</field>
         <field name="model">openacademy.course</field>
@@ -37,6 +39,7 @@
             </tree>
         </field>
     </record>
+    <!-- Search View -->
     <record id="course_search_view" model="ir.ui.view">
         <field name="name">course.search</field>
         <field name="model">openacademy.course</field>
@@ -51,6 +54,7 @@
             </search>
         </field>
     </record>
+    <!-- Action -->
     <record id="course_list_action" model="ir.actions.act_window">
         <field name="name">Courses</field>
         <field name="res_model">openacademy.course</field>
@@ -62,5 +66,6 @@
                 </p>
         </field>
     </record>
+    <!-- Menu -->
     <menuitem action="course_list_action" id="courses_menu" name="Courses" parent="openacademy_menu"/>
 </odoo>

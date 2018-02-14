@@ -36,6 +36,20 @@ class OpenacademySession(models.Model):
         store=True,
         compute='_compute_end_date',
         inverse='_inverse_end_date')
+    hours = fields.Float(
+        string="Duration in hours",
+        compute='_compute_hours',
+        inverse='_inverse_hours')
+    attendees_count = fields.Integer(
+        string="Attendees count",
+        compute='_compute_attendees_count',
+        store=True)
+    color = fields.Integer()
+
+    @api.depends('attendee_ids')
+    def _compute_attendees_count(self):
+        for rec in self:
+            rec.attendees_count = len(rec.attendee_ids)
 
     @api.depends('seats', 'attendee_ids')
     def _compute_taken_seats(self):
@@ -44,6 +58,15 @@ class OpenacademySession(models.Model):
                 rec.taken_seats = 0.0
             else:
                 rec.taken_seats = 100.0 * len(rec.attendee_ids) / rec.seats
+
+    @api.depends('duration')
+    def _compute_hours(self):
+        for rec in self:
+            rec.hours = rec.duration * 24
+
+    def _set_hours(self):
+        for rec in self:
+            rec.duration = rec.hours / 24
 
     @api.onchange('seats', 'attendee_ids')
     def _onchange_verify_valid_seats(self):

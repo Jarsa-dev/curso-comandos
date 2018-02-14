@@ -14,6 +14,8 @@
         'base',
     ],
     'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
         'views/openacademy.xml',
         'views/openacademy_course.xml',
         'views/openacademy_session.xml',
